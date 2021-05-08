@@ -18,6 +18,8 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import Tooltip from "@material-ui/core/Tooltip";
 import ListItems from "./listItems";
 import ListsPage from "./ListsPage";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import TasksPage from "./TasksPage";
 
 const drawerWidth = 240;
 
@@ -174,7 +176,12 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <ListsPage />
+          <BrowserRouter>
+            <Switch>
+              <Route exact path="/" component={ListsPage} />
+              <Route exact path="/task" component={TasksPage} />
+            </Switch>
+          </BrowserRouter>
         </Container>
       </main>
     </div>

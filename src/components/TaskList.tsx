@@ -1,3 +1,4 @@
+import { Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import ToDoList from "../models/ToDoList";
 
@@ -21,7 +22,9 @@ export default function TaskList(props: taskListProps) {
             />
           </div>
           <div>
-            <h4>{props.list.Name}</h4>
+            <Typography variant="h4" gutterBottom>
+              {props.list.Name}
+            </Typography>
             <small>
               Last update: {props.list.TimeCreate.toLocaleTimeString()}
             </small>

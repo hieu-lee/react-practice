@@ -10,9 +10,60 @@ type TaskItemProps = {
 
 export default function TaskItem(props: TaskItemProps) {
   const [DropState, setDropState] = useState("assets/down_arrow.png");
+  const [CompletedState, setCompletedState] = useState(props.Item.Completed);
+  const [ImportantState, setImportantState] = useState(props.Item.Important);
+  const ImportantChangeHandler = () => {
+    setImportantState(!ImportantState);
+    props.setListState(
+      props.ListState.map((item) => {
+        if (item.ItemId === props.Item.ItemId) {
+          item.Important = props.Item.Important;
+        }
+        return item;
+      })
+    );
+  };
+  const CompletedChangeHandler = () => {
+    setCompletedState(!CompletedState);
+    props.setListState(
+      props.ListState.map((item) => {
+        if (item.ItemId === props.Item.ItemId) {
+          item.Completed = props.Item.Completed;
+        }
+        return item;
+      })
+    );
+  };
+  const ItemDropHandler = () => {
+    props.setListState(
+      props.ListState.map((item) => {
+        if (item.ItemId === props.Item.ItemId) {
+          if (item.DeleteHeight === "0") {
+            item.ContentHeight = "65px";
+            item.DeleteHeight = "30px";
+          } else {
+            item.ContentHeight = "0";
+            item.DeleteHeight = "0";
+          }
+        }
+        return item;
+      })
+    );
+    if (DropState === "assets/down_arrow.png") {
+      setDropState("assets/up_arrow.png");
+      return;
+    } else {
+      setDropState("assets/down_arrow.png");
+    }
+  };
+  const ItemDeleteHandler = () => {
+    props.setListState(
+      props.ListState.filter((item) => item.ItemId !== props.Item.ItemId)
+    );
+  };
   var time =
     props.Item.TimeRemind === null ? "Daily" : `${props.Item.TimeRemind}`;
-  if (!props.Item.Completed) {
+  if (!CompletedState) {
     return (
       <div>
         <div>
@@ -22,7 +73,8 @@ export default function TaskItem(props: TaskItemProps) {
                 <Checkbox
                   disableRipple={true}
                   color="primary"
-                  checked={false}
+                  checked={CompletedState}
+                  onChange={CompletedChangeHandler}
                 />
                 <span style={{ margin: "0 5px" }}>{props.Item.Title}</span>
               </div>
@@ -30,6 +82,7 @@ export default function TaskItem(props: TaskItemProps) {
             </div>
             <div style={{ marginRight: "12px", marginTop: "12px" }}>
               <img
+                onClick={ItemDropHandler}
                 src={DropState}
                 style={{ width: "30px", height: "30px", cursor: "pointer" }}
               />
@@ -41,7 +94,8 @@ export default function TaskItem(props: TaskItemProps) {
             </span>
             <Switch
               disableRipple={true}
-              checked={props.Item.Important}
+              checked={ImportantState}
+              onChange={ImportantChangeHandler}
               color="secondary"
               style={{ marginBottom: "0" }}
             />
@@ -54,6 +108,7 @@ export default function TaskItem(props: TaskItemProps) {
             }}
           >
             <TextField
+              style={{ marginTop: "5px" }}
               variant="outlined"
               multiline={true}
               fullWidth={true}
@@ -62,6 +117,7 @@ export default function TaskItem(props: TaskItemProps) {
           </div>
         </div>
         <div
+          onClick={ItemDeleteHandler}
           style={{
             backgroundColor: "red",
             textAlign: "center",
@@ -72,7 +128,11 @@ export default function TaskItem(props: TaskItemProps) {
         >
           <img
             src="assets/trash.png"
-            style={{ width: "30px", height: "30px" }}
+            style={{
+              width: "30px",
+              height: props.Item.DeleteHeight,
+              transition: "height 0.5s",
+            }}
           />
         </div>
         <hr />
@@ -81,18 +141,32 @@ export default function TaskItem(props: TaskItemProps) {
   } else {
     return (
       <div>
-        <div style={{ backgroundColor: "A79FEF" }}>
-          <div>
-            <Checkbox disableRipple={true} color="primary" checked={true} />
-            <span style={{ margin: "0 5px" }}>
-              <del>{props.Item.Title}</del>
-            </span>
-          </div>
-          <div style={{ marginRight: "12px", marginTop: "12px" }}>
-            <img
-              src={DropState}
-              style={{ width: "30px", height: "30px", cursor: "pointer" }}
-            />
+        <div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              background: "#A79FEF",
+            }}
+          >
+            <div>
+              <Checkbox
+                disableRipple={true}
+                color="primary"
+                checked={CompletedState}
+                onChange={CompletedChangeHandler}
+              />
+              <span style={{ margin: "0 5px" }}>
+                <del>{props.Item.Title}</del>
+              </span>
+            </div>
+            <div style={{ marginRight: "12px", marginTop: "12px" }}>
+              <img
+                onClick={ItemDropHandler}
+                src={DropState}
+                style={{ width: "30px", height: "30px", cursor: "pointer" }}
+              />
+            </div>
           </div>
           <div
             style={{
@@ -102,6 +176,7 @@ export default function TaskItem(props: TaskItemProps) {
             }}
           >
             <TextField
+              style={{ marginTop: "5px" }}
               variant="outlined"
               multiline={true}
               fullWidth={true}
@@ -110,6 +185,7 @@ export default function TaskItem(props: TaskItemProps) {
           </div>
         </div>
         <div
+          onClick={ItemDeleteHandler}
           style={{
             backgroundColor: "red",
             textAlign: "center",
@@ -120,7 +196,11 @@ export default function TaskItem(props: TaskItemProps) {
         >
           <img
             src="assets/trash.png"
-            style={{ width: "30px", height: "30px" }}
+            style={{
+              width: "30px",
+              height: props.Item.DeleteHeight,
+              transition: "height 0.5s",
+            }}
           />
         </div>
         <hr />

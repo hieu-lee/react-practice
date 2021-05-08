@@ -12,8 +12,7 @@ const useStyles = makeStyles(() => ({
 
 export default function ListPage() {
   const classes = useStyles();
-  const myLists: ToDoList[] = [];
-  const [MyLists, setMyLists] = useState(myLists);
+  const [MyLists, setMyLists] = useState(new Array<ToDoList>());
   const [NewName, setNewName] = useState("");
   const AddNewList = () => {
     var s = NewName.trim();
