@@ -1,22 +1,76 @@
-import { Button, Switch, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
+import {
+  Button,
+  makeStyles,
+  Paper,
+  Switch,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import ToDoItem from "../models/ToDoItem";
 import DatePicker from "./DatePicker";
 import TaskItem from "./TaskItem";
 import TimePicker from "./TimePicker";
 
+const useStyles = makeStyles({
+  root: {
+    flexGrow: 1,
+  },
+});
+
 export default function TasksPage() {
   const [ListState, setListState] = useState(new Array<ToDoItem>());
+  const [FilteredListState, setFilteredListState] = useState(ListState);
   const [DropState, setDropState] = useState("assets/down_arrow.png");
   const [ContentHeight, setContentHeight] = useState("0");
   const [NewTitle, setNewTitle] = useState("");
   const [NewContent, setNewContent] = useState("");
   const [NewImportant, setNewImportant] = useState(false);
   const [NewDate, setNewDate] = React.useState<Date | null>(null);
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+  const updateFilter = () => {
+    switch (value) {
+      case 0:
+        setFilteredListState(ListState);
+        return;
+      case 1:
+        const today = new Date();
+        setFilteredListState(
+          ListState.filter(
+            (item) =>
+              item.TimeRemind === null ||
+              (item.TimeRemind.getDate() === today.getDate() &&
+                item.TimeRemind.getMonth() === today.getMonth() &&
+                item.TimeRemind.getFullYear() === today.getFullYear())
+          )
+        );
+        return;
+      case 2:
+        setFilteredListState(ListState.filter((item) => !item.Completed));
+        return;
+      case 3:
+        setFilteredListState(ListState.filter((item) => item.Important));
+        return;
+      case 4:
+        setFilteredListState(ListState.filter((item) => item.Completed));
+        return;
+      default:
+        return;
+    }
+  };
+  useEffect(() => {
+    updateFilter();
+  }, [value, ListState]);
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
+  };
   const SaveListAsync = async () => {
     return;
   };
-  const AddNewItem = () => {
+  const AddNewItem = async () => {
     if (NewTitle.trim() !== "") {
       setNewTitle(NewTitle.trim());
       setNewContent(NewContent.trim());
@@ -24,6 +78,11 @@ export default function TasksPage() {
       NewItem.Important = NewImportant;
       NewItem.Title = NewTitle;
       NewItem.TimeRemind = NewDate;
+      if (NewDate !== null) {
+        console.log(NewDate.getDate());
+        console.log(NewDate.getMonth());
+        console.log(NewDate.getFullYear());
+      }
       NewItem.Content = NewContent;
       setNewImportant(false);
       setNewTitle("");
@@ -133,8 +192,23 @@ export default function TasksPage() {
         />
       </div>
       <hr />
+      <Paper className={classes.root}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab label="All Tasks" />
+          <Tab label="Today Tasks" />
+          <Tab label="Uncompleted Tasks" />
+          <Tab label="Important Tasks" />
+          <Tab label="Completed Tasks" />
+        </Tabs>
+      </Paper>
       <ul>
-        {ListState.map((item) => (
+        {FilteredListState.map((item) => (
           <li key={item.ItemId}>
             <TaskItem
               Item={item}

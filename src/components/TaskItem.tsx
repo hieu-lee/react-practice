@@ -12,23 +12,25 @@ export default function TaskItem(props: TaskItemProps) {
   const [DropState, setDropState] = useState("assets/down_arrow.png");
   const [CompletedState, setCompletedState] = useState(props.Item.Completed);
   const [ImportantState, setImportantState] = useState(props.Item.Important);
-  const ImportantChangeHandler = () => {
-    setImportantState(!ImportantState);
+  const ImportantChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImportantState(e.target.checked);
+    props.Item.Important = e.target.checked;
     props.setListState(
       props.ListState.map((item) => {
         if (item.ItemId === props.Item.ItemId) {
-          item.Important = props.Item.Important;
+          item.Important = e.target.checked;
         }
         return item;
       })
     );
   };
-  const CompletedChangeHandler = () => {
-    setCompletedState(!CompletedState);
+  const CompletedChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCompletedState(e.target.checked);
+    props.Item.Completed = e.target.checked;
     props.setListState(
       props.ListState.map((item) => {
         if (item.ItemId === props.Item.ItemId) {
-          item.Completed = props.Item.Completed;
+          item.Completed = e.target.checked;
         }
         return item;
       })
