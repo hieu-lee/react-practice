@@ -20,6 +20,14 @@ import ListItems from "./listItems";
 import ListsPage from "./ListsPage";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import TasksPage from "./TasksPage";
+import LogInPage from "./LogInPage";
+
+type DashboardProps = {
+  LoggedState: boolean;
+  setLoggedState: React.Dispatch<React.SetStateAction<boolean>>;
+  UsernameState: string;
+  setUsernameState: React.Dispatch<React.SetStateAction<string>>;
+};
 
 const drawerWidth = 240;
 
@@ -105,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
+export default function Dashboard(props: DashboardProps) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -176,12 +184,18 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <BrowserRouter>
-            <Switch>
-              <Route exact path="/" component={ListsPage} />
-              <Route exact path="/task" component={TasksPage} />
-            </Switch>
-          </BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={ListsPage} />
+            <Route exact path="/task" component={TasksPage} />
+            <Route exact path="/log">
+              <LogInPage
+                LoggedState={props.LoggedState}
+                setLoggedState={props.setLoggedState}
+                UsernameState={props.UsernameState}
+                setUsernameState={props.setUsernameState}
+              />
+            </Route>
+          </Switch>
         </Container>
       </main>
     </div>

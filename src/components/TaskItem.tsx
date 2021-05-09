@@ -10,6 +10,7 @@ type TaskItemProps = {
 
 export default function TaskItem(props: TaskItemProps) {
   const [DropState, setDropState] = useState("assets/down_arrow.png");
+  const [ContentState, setContentState] = useState(props.Item.Content);
   const [CompletedState, setCompletedState] = useState(props.Item.Completed);
   const [ImportantState, setImportantState] = useState(props.Item.Important);
   const ImportantChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +20,18 @@ export default function TaskItem(props: TaskItemProps) {
       props.ListState.map((item) => {
         if (item.ItemId === props.Item.ItemId) {
           item.Important = e.target.checked;
+        }
+        return item;
+      })
+    );
+  };
+  const ContentChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContentState(e.target.value);
+    props.Item.Content = e.target.value;
+    props.setListState(
+      props.ListState.map((item) => {
+        if (item.ItemId === props.Item.ItemId) {
+          item.Content = e.target.value;
         }
         return item;
       })
@@ -114,7 +127,8 @@ export default function TaskItem(props: TaskItemProps) {
               variant="outlined"
               multiline={true}
               fullWidth={true}
-              value={props.Item.Content}
+              value={ContentState}
+              onChange={ContentChangeHandler}
             />
           </div>
         </div>
@@ -182,7 +196,8 @@ export default function TaskItem(props: TaskItemProps) {
               variant="outlined"
               multiline={true}
               fullWidth={true}
-              value={props.Item.Content}
+              value={ContentState}
+              onChange={ContentChangeHandler}
             />
           </div>
         </div>
