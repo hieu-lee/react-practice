@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Paper,
   Snackbar,
   TextField,
@@ -22,7 +23,30 @@ function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
+type LogButtonProps = {
+  text: string;
+  onClickHandler: () => Promise<void>;
+  LoadingState: boolean;
+};
+
+function LogButton(props: LogButtonProps) {
+  if (!props.LoadingState) {
+    return (
+      <Button
+        onClick={props.onClickHandler}
+        variant="contained"
+        color="primary"
+      >
+        {props.text}
+      </Button>
+    );
+  } else {
+    return <CircularProgress />;
+  }
+}
+
 export default function LogInPage(props: LogInPageProps) {
+  const [LoadingState, setLoadingState] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [register, setRegister] = useState(false);
@@ -56,9 +80,11 @@ export default function LogInPage(props: LogInPageProps) {
       setSnackbarOpenState(true);
       return;
     } else {
+      setLoadingState(true);
       const myAcc = new Account(username, password);
       try {
         var res = await SignIn(myAcc);
+        setLoadingState(false);
         setSnackbarMessageState("Successfully signed in");
         setSnackbarSeverityState("success");
         props.setLoggedState(true);
@@ -67,6 +93,7 @@ export default function LogInPage(props: LogInPageProps) {
         localStorage.setItem("UsernameState", username);
         setSnackbarOpenState(true);
       } catch (err) {
+        setLoadingState(false);
         setSnackbarMessageState(err.response.data);
         setSnackbarSeverityState("error");
         setSnackbarOpenState(true);
@@ -89,11 +116,13 @@ export default function LogInPage(props: LogInPageProps) {
       setSnackbarSeverityState("error");
       setSnackbarOpenState(true);
     } else {
+      setLoadingState(true);
       setUsername(username.trim());
       setPassword(password.trim());
       const myAcc = new Account(username, password);
       try {
         var res = await SignUp(myAcc);
+        setLoadingState(false);
         setSnackbarMessageState("Successfully signed up with your new account");
         setSnackbarSeverityState("success");
         props.setLoggedState(true);
@@ -102,6 +131,7 @@ export default function LogInPage(props: LogInPageProps) {
         localStorage.setItem("UsernameState", username);
         setSnackbarOpenState(true);
       } catch (err) {
+        setLoadingState(false);
         setSnackbarMessageState(err.response.data);
         setSnackbarSeverityState("error");
         setSnackbarOpenState(true);
@@ -157,9 +187,11 @@ export default function LogInPage(props: LogInPageProps) {
               </Typography>
               <br />
               <br />
-              <Button onClick={LogInAsync} variant="contained" color="primary">
-                Login
-              </Button>
+              <LogButton
+                text={"Login"}
+                onClickHandler={LogInAsync}
+                LoadingState={LoadingState}
+              />
             </div>
           </Paper>
           <Snackbar
@@ -227,9 +259,11 @@ export default function LogInPage(props: LogInPageProps) {
               </Typography>
               <br />
               <br />
-              <Button onClick={SignUpAsync} variant="contained" color="primary">
-                Sign Up
-              </Button>
+              <LogButton
+                text={"Sign Up"}
+                onClickHandler={SignUpAsync}
+                LoadingState={LoadingState}
+              />
             </div>
           </Paper>
           <Snackbar

@@ -3,19 +3,20 @@ import ToDoItem from "../models/ToDoItem";
 import ToDoList from "../models/ToDoList";
 import axios from "./axios";
 
-export async function GetListAsync(username: string) {
-  await axios
-    .get<ToDoList[]>(`/api/Lists/${username}`)
+export async function GetListsAsync(username: string) {
+  var res = await axios
+    .get<ToDoList[]>(`/api/Lists/lists/${username}`)
     .then((response) => {
       return response.data;
     })
     .catch((err) => {
       throw err;
     });
+  return res;
 }
 
 export async function GetTodayItemsAsync(username: string) {
-  await axios
+  var res = await axios
     .get<ToDoItem[]>(`/api/Lists/today-items/${username}`)
     .then((response) => {
       return response.data;
@@ -23,10 +24,11 @@ export async function GetTodayItemsAsync(username: string) {
     .catch((err) => {
       throw err;
     });
+  return res;
 }
 
 export async function GetItemsFromDateAsync(username: string, date: string) {
-  await axios
+  var res = await axios
     .get<ToDoItem[]>(`/api/Lists/date-items/${username}/${date}`)
     .then((response) => {
       return response.data;
@@ -34,10 +36,11 @@ export async function GetItemsFromDateAsync(username: string, date: string) {
     .catch((err) => {
       throw err;
     });
+  return res;
 }
 
 export async function GetItemsAsync(username: string, listid: string) {
-  await axios
+  var res = await axios
     .get<ToDoItem[]>(`/api/Lists/items/${username}/${listid}`)
     .then((response) => {
       return response.data;
@@ -45,9 +48,11 @@ export async function GetItemsAsync(username: string, listid: string) {
     .catch((err) => {
       throw err;
     });
+  return res;
 }
 
 export async function CreateNewListAsync(username: string, list: ToDoList) {
+  list.ownerUsername = username;
   await axios
     .post(`api/Lists/new-list/${username}`, list)
     .then((response) => {

@@ -154,7 +154,7 @@ export default function Dashboard(props: DashboardProps) {
             To Do
           </Typography>
           <a
-            href="https://github.com/hieu-lee/to-do-list-react"
+            href="https://github.com/hieu-lee/react-practice"
             target="_blank"
             style={{ color: "white", outline: "none" }}
           >
@@ -185,8 +185,14 @@ export default function Dashboard(props: DashboardProps) {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Switch>
-            <Route exact path="/" component={ListsPage} />
-            <Route exact path="/task" component={TasksPage} />
+            <Route exact path="/">
+              <ListsPage
+                LoggedState={props.LoggedState}
+                setLoggedState={props.setLoggedState}
+                UsernameState={props.UsernameState}
+                setUsernameState={props.setUsernameState}
+              />
+            </Route>
             <Route exact path="/log">
               <LogInPage
                 LoggedState={props.LoggedState}
@@ -195,6 +201,20 @@ export default function Dashboard(props: DashboardProps) {
                 setUsernameState={props.setUsernameState}
               />
             </Route>
+            <Route
+              exact
+              path="/task/:listId/:listName"
+              render={(routeProps) => (
+                <TasksPage
+                  listName={routeProps.match.params.listName}
+                  listId={routeProps.match.params.listId}
+                  LoggedState={props.LoggedState}
+                  setLoggedState={props.setLoggedState}
+                  UsernameState={props.UsernameState}
+                  setUsernameState={props.setUsernameState}
+                />
+              )}
+            />
           </Switch>
         </Container>
       </main>

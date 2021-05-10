@@ -26,7 +26,7 @@ export default function ListItems() {
           <ListItemText primary="Log In" />
         </ListItem>
       </NavLink>
-      <ListItem button>
+      {/* <ListItem button>
         <ListItemIcon>
           <TodayIcon />
         </ListItemIcon>
@@ -37,7 +37,7 @@ export default function ListItems() {
           <DateRangeIcon />
         </ListItemIcon>
         <ListItemText primary="Custom Day Tasks" />
-      </ListItem>
+      </ListItem> */}
     </nav>
   );
 }

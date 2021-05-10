@@ -1,25 +1,27 @@
 import { Checkbox, Switch, TextField } from "@material-ui/core";
 import React, { useState } from "react";
+import { DeleteItemAsync } from "../apis/ListsService";
 import ToDoItem from "../models/ToDoItem";
 
 type TaskItemProps = {
+  UsernameState: string;
   Item: ToDoItem;
   ListState: ToDoItem[];
   setListState: React.Dispatch<React.SetStateAction<ToDoItem[]>>;
 };
 
 export default function TaskItem(props: TaskItemProps) {
-  const [DropState, setDropState] = useState("assets/down_arrow.png");
-  const [ContentState, setContentState] = useState(props.Item.Content);
-  const [CompletedState, setCompletedState] = useState(props.Item.Completed);
-  const [ImportantState, setImportantState] = useState(props.Item.Important);
+  const [DropState, setDropState] = useState("../../assets/down_arrow.png");
+  const [ContentState, setContentState] = useState(props.Item.content);
+  const [CompletedState, setCompletedState] = useState(props.Item.completed);
+  const [ImportantState, setImportantState] = useState(props.Item.important);
   const ImportantChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setImportantState(e.target.checked);
-    props.Item.Important = e.target.checked;
+    props.Item.important = e.target.checked;
     props.setListState(
       props.ListState.map((item) => {
-        if (item.ItemId === props.Item.ItemId) {
-          item.Important = e.target.checked;
+        if (item.itemId === props.Item.itemId) {
+          item.important = e.target.checked;
         }
         return item;
       })
@@ -27,11 +29,11 @@ export default function TaskItem(props: TaskItemProps) {
   };
   const ContentChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContentState(e.target.value);
-    props.Item.Content = e.target.value;
+    props.Item.content = e.target.value;
     props.setListState(
       props.ListState.map((item) => {
-        if (item.ItemId === props.Item.ItemId) {
-          item.Content = e.target.value;
+        if (item.itemId === props.Item.itemId) {
+          item.content = e.target.value;
         }
         return item;
       })
@@ -39,11 +41,11 @@ export default function TaskItem(props: TaskItemProps) {
   };
   const CompletedChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCompletedState(e.target.checked);
-    props.Item.Completed = e.target.checked;
+    props.Item.completed = e.target.checked;
     props.setListState(
       props.ListState.map((item) => {
-        if (item.ItemId === props.Item.ItemId) {
-          item.Completed = e.target.checked;
+        if (item.itemId === props.Item.itemId) {
+          item.completed = e.target.checked;
         }
         return item;
       })
@@ -52,32 +54,37 @@ export default function TaskItem(props: TaskItemProps) {
   const ItemDropHandler = () => {
     props.setListState(
       props.ListState.map((item) => {
-        if (item.ItemId === props.Item.ItemId) {
-          if (item.DeleteHeight === "0") {
-            item.ContentHeight = "65px";
-            item.DeleteHeight = "30px";
+        if (item.itemId === props.Item.itemId) {
+          if (item.deleteHeight === "0") {
+            item.contentHeight = "65px";
+            item.deleteHeight = "30px";
           } else {
-            item.ContentHeight = "0";
-            item.DeleteHeight = "0";
+            item.contentHeight = "0";
+            item.deleteHeight = "0";
           }
         }
         return item;
       })
     );
-    if (DropState === "assets/down_arrow.png") {
-      setDropState("assets/up_arrow.png");
+    if (DropState === "../../assets/down_arrow.png") {
+      setDropState("../../assets/up_arrow.png");
       return;
     } else {
-      setDropState("assets/down_arrow.png");
+      setDropState("../../assets/down_arrow.png");
     }
   };
-  const ItemDeleteHandler = () => {
+  const ItemDeleteHandler = async () => {
     props.setListState(
-      props.ListState.filter((item) => item.ItemId !== props.Item.ItemId)
+      props.ListState.filter((item) => item.itemId !== props.Item.itemId)
     );
+    await DeleteItemAsync(props.UsernameState, props.Item.itemId);
   };
+  var date =
+    props.Item.timeRemind === null ? null : new Date(props.Item.timeRemind);
   var time =
-    props.Item.TimeRemind === null ? "Daily" : `${props.Item.TimeRemind}`;
+    date === null
+      ? "Daily"
+      : `${date.getDate()}/${date.getMonth()}/${date.getFullYear()} at ${date.toLocaleTimeString()}`;
   if (!CompletedState) {
     return (
       <div>
@@ -91,7 +98,7 @@ export default function TaskItem(props: TaskItemProps) {
                   checked={CompletedState}
                   onChange={CompletedChangeHandler}
                 />
-                <span style={{ margin: "0 5px" }}>{props.Item.Title}</span>
+                <span style={{ margin: "0 5px" }}>{props.Item.title}</span>
               </div>
               <small style={{ marginLeft: "15px" }}>Time: {time}</small>
             </div>
@@ -117,7 +124,7 @@ export default function TaskItem(props: TaskItemProps) {
           </div>
           <div
             style={{
-              height: props.Item.ContentHeight,
+              height: props.Item.contentHeight,
               overflowY: "hidden",
               transition: "height 0.5s",
             }}
@@ -137,16 +144,16 @@ export default function TaskItem(props: TaskItemProps) {
           style={{
             backgroundColor: "red",
             textAlign: "center",
-            height: props.Item.DeleteHeight,
+            height: props.Item.deleteHeight,
             transition: "height 0.5s",
             cursor: "pointer",
           }}
         >
           <img
-            src="assets/trash.png"
+            src="../../assets/trash.png"
             style={{
               width: "30px",
-              height: props.Item.DeleteHeight,
+              height: props.Item.deleteHeight,
               transition: "height 0.5s",
             }}
           />
@@ -173,7 +180,7 @@ export default function TaskItem(props: TaskItemProps) {
                 onChange={CompletedChangeHandler}
               />
               <span style={{ margin: "0 5px" }}>
-                <del>{props.Item.Title}</del>
+                <del>{props.Item.title}</del>
               </span>
             </div>
             <div style={{ marginRight: "12px", marginTop: "12px" }}>
@@ -186,7 +193,7 @@ export default function TaskItem(props: TaskItemProps) {
           </div>
           <div
             style={{
-              height: props.Item.ContentHeight,
+              height: props.Item.contentHeight,
               overflowY: "hidden",
               transition: "height 0.5s",
             }}
@@ -206,16 +213,16 @@ export default function TaskItem(props: TaskItemProps) {
           style={{
             backgroundColor: "red",
             textAlign: "center",
-            height: props.Item.DeleteHeight,
+            height: props.Item.deleteHeight,
             transition: "height 0.5s",
             cursor: "pointer",
           }}
         >
           <img
-            src="assets/trash.png"
+            src="../../assets/trash.png"
             style={{
               width: "30px",
-              height: props.Item.DeleteHeight,
+              height: props.Item.deleteHeight,
               transition: "height 0.5s",
             }}
           />

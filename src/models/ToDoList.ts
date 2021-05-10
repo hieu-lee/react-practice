@@ -4,11 +4,11 @@ import ToDoItem from "./ToDoItem";
 import Account from "./Account";
 
 export default class ToDoList {
-  ListId: string = uuidv4();
-  Name!: string;
-  TimeCreate: Date = new Date();
-  OwnerUsername!: string;
-  Owner!: Account;
-  Items: ToDoItem[] = [];
-  DeleteHeight: string = "0";
+  listId: string = uuidv4();
+  name!: string;
+  timeCreate: Date = new Date();
+  ownerUsername!: string;
+  owner!: Account;
+  items: ToDoItem[] = [];
+  deleteHeight: string = "0";
 }

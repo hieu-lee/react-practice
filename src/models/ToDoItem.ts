@@ -3,17 +3,17 @@ import { v4 as uuidv4 } from "uuid";
 import ToDoList from "./ToDoList";
 
 export default class ToDoItem {
-  ItemId: string = uuidv4();
-  ParentListId!: string;
-  ParentList!: ToDoList;
-  Owner!: string;
-  TimeCreate!: Date;
-  TimeRemind: Date | null = null;
-  Important: boolean = false;
-  Completed: boolean = false;
-  Content: string = "";
-  Title!: string;
-  ContentHeight: string = "0";
-  DeleteHeight: string = "0";
-  LastNotified: Date | null = null;
+  itemId: string = uuidv4();
+  parentListId!: string;
+  parentList!: ToDoList;
+  owner!: string;
+  timeCreate!: Date;
+  timeRemind: Date | null = null;
+  important: boolean = false;
+  completed: boolean = false;
+  content: string = "";
+  title!: string;
+  contentHeight: string = "0";
+  deleteHeight: string = "0";
+  lastNotified: Date | null = null;
 }
