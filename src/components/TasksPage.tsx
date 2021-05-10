@@ -71,9 +71,9 @@ export default function TasksPage(props: TasksPageProps) {
           ListState.filter(
             (item) =>
               item.timeRemind === null ||
-              (item.timeRemind.getDate() === today.getDate() &&
-                item.timeRemind.getMonth() === today.getMonth() &&
-                item.timeRemind.getFullYear() === today.getFullYear())
+              (new Date(item.timeRemind).getDate() === today.getDate() &&
+                new Date(item.timeRemind).getMonth() === today.getMonth() &&
+                new Date(item.timeRemind).getFullYear() === today.getFullYear())
           )
         );
         return;
