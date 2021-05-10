@@ -1,5 +1,14 @@
-import { Button, Paper, TextField, Typography } from "@material-ui/core";
+import {
+  Button,
+  Paper,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@material-ui/core";
+import MuiAlert, { AlertProps, Color } from "@material-ui/lab/Alert";
 import React, { useState } from "react";
+import { SignIn, SignUp } from "../apis/AccountsService";
+import Account from "../models/Account";
 import "./LogInPage.css";
 
 type LogInPageProps = {
@@ -9,11 +18,20 @@ type LogInPageProps = {
   setUsernameState: React.Dispatch<React.SetStateAction<string>>;
 };
 
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export default function LogInPage(props: LogInPageProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [register, setRegister] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [snackbarOpenState, setSnackbarOpenState] = useState(false);
+  const [snackbarSeverityState, setSnackbarSeverityState] = useState<Color>(
+    "error"
+  );
+  const [snackbarMessageState, setSnackbarMessageState] = useState("");
   const ChangeRegister = () => {
     setUsername("");
     setPassword("");
@@ -26,17 +44,75 @@ export default function LogInPage(props: LogInPageProps) {
     localStorage.setItem("LoggedState", "false");
     localStorage.setItem("UsernameState", "");
   };
-  const LogIn = () => {
-    props.setLoggedState(true);
-    props.setUsernameState(username);
-    localStorage.setItem("LoggedState", "true");
-    localStorage.setItem("UsernameState", username);
+  const LogInAsync = async () => {
+    if (username.trim() === "") {
+      setSnackbarMessageState("You need to fill in your username");
+      setSnackbarSeverityState("error");
+      setSnackbarOpenState(true);
+      return;
+    } else if (password.trim().length < 6) {
+      setSnackbarMessageState("Your password must be at least 6 characters");
+      setSnackbarSeverityState("error");
+      setSnackbarOpenState(true);
+      return;
+    } else {
+      const myAcc = new Account(username, password);
+      try {
+        var res = await SignIn(myAcc);
+        setSnackbarMessageState("Successfully signed in");
+        setSnackbarSeverityState("success");
+        props.setLoggedState(true);
+        props.setUsernameState(username);
+        localStorage.setItem("LoggedState", "true");
+        localStorage.setItem("UsernameState", username);
+        setSnackbarOpenState(true);
+      } catch (err) {
+        setSnackbarMessageState(err.response.data);
+        setSnackbarSeverityState("error");
+        setSnackbarOpenState(true);
+      }
+    }
   };
-  const SignUp = () => {
-    props.setLoggedState(true);
-    props.setUsernameState(username);
-    localStorage.setItem("LoggedState", "true");
-    localStorage.setItem("UsernameState", username);
+  const SignUpAsync = async () => {
+    if (username.trim() === "") {
+      setSnackbarMessageState("You need to fill in your username");
+      setSnackbarSeverityState("error");
+      setSnackbarOpenState(true);
+      return;
+    } else if (password.trim().length < 6) {
+      setSnackbarMessageState("Your password must be at least 6 characters");
+      setSnackbarSeverityState("error");
+      setSnackbarOpenState(true);
+      return;
+    } else if (password.trim() !== passwordConfirm.trim()) {
+      setSnackbarMessageState("You haven't correctly confirm your password");
+      setSnackbarSeverityState("error");
+      setSnackbarOpenState(true);
+    } else {
+      setUsername(username.trim());
+      setPassword(password.trim());
+      const myAcc = new Account(username, password);
+      try {
+        var res = await SignUp(myAcc);
+        setSnackbarMessageState("Successfully signed up with your new account");
+        setSnackbarSeverityState("success");
+        props.setLoggedState(true);
+        props.setUsernameState(username);
+        localStorage.setItem("LoggedState", "true");
+        localStorage.setItem("UsernameState", username);
+        setSnackbarOpenState(true);
+      } catch (err) {
+        setSnackbarMessageState(err.response.data);
+        setSnackbarSeverityState("error");
+        setSnackbarOpenState(true);
+      }
+    }
+  };
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpenState(false);
   };
   if (!props.LoggedState) {
     if (!register) {
@@ -81,11 +157,21 @@ export default function LogInPage(props: LogInPageProps) {
               </Typography>
               <br />
               <br />
-              <Button variant="contained" color="primary">
+              <Button onClick={LogInAsync} variant="contained" color="primary">
                 Login
               </Button>
             </div>
           </Paper>
+          <Snackbar
+            open={snackbarOpenState}
+            autoHideDuration={5000}
+            onClose={handleClose}
+            anchorOrigin={{ horizontal: "right", vertical: "top" }}
+          >
+            <Alert onClose={handleClose} severity={snackbarSeverityState}>
+              {snackbarMessageState}
+            </Alert>
+          </Snackbar>
         </div>
       );
     } else {
@@ -141,11 +227,21 @@ export default function LogInPage(props: LogInPageProps) {
               </Typography>
               <br />
               <br />
-              <Button variant="contained" color="primary">
+              <Button onClick={SignUpAsync} variant="contained" color="primary">
                 Sign Up
               </Button>
             </div>
           </Paper>
+          <Snackbar
+            open={snackbarOpenState}
+            autoHideDuration={5000}
+            onClose={handleClose}
+            anchorOrigin={{ horizontal: "right", vertical: "top" }}
+          >
+            <Alert onClose={handleClose} severity={snackbarSeverityState}>
+              {snackbarMessageState}
+            </Alert>
+          </Snackbar>
         </div>
       );
     }
@@ -159,10 +255,22 @@ export default function LogInPage(props: LogInPageProps) {
           <Typography variant="h4">
             You have already logged in as {props.UsernameState}
           </Typography>
-          <Button color="primary" variant="contained">
+          <br />
+          <br />
+          <Button onClick={LogOut} color="primary" variant="contained">
             Log Out
           </Button>
         </Paper>
+        <Snackbar
+          open={snackbarOpenState}
+          autoHideDuration={5000}
+          onClose={handleClose}
+          anchorOrigin={{ horizontal: "right", vertical: "top" }}
+        >
+          <Alert onClose={handleClose} severity={snackbarSeverityState}>
+            {snackbarMessageState}
+          </Alert>
+        </Snackbar>
       </div>
     );
   }

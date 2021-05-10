@@ -7,6 +7,7 @@ export default class ToDoList {
   ListId: string = uuidv4();
   Name!: string;
   TimeCreate: Date = new Date();
+  OwnerUsername!: string;
   Owner!: Account;
   Items: ToDoItem[] = [];
   DeleteHeight: string = "0";

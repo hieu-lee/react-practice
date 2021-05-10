@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://todolistbackend.azurewebsites.net",
+  baseURL: "https://localhost:5001/",
 });
 
 export default instance;
