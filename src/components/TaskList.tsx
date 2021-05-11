@@ -2,6 +2,10 @@ import { Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import ToDoList from "../models/ToDoList";
+import DownArrow from "../assets/down_arrow.png";
+import UpArrow from "../assets/up_arrow.png";
+import TrashIcon from "../assets/trash.png";
+import ListIcon from "../assets/list.png";
 
 type taskListProps = {
   list: ToDoList;
@@ -10,7 +14,7 @@ type taskListProps = {
 };
 
 export default function TaskList(props: taskListProps) {
-  const [DropState, setDropState] = useState("assets/down_arrow.png");
+  const [DropState, setDropState] = useState(DownArrow);
   var date = new Date(props.list.timeCreate);
   var time = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
   return (
@@ -22,7 +26,7 @@ export default function TaskList(props: taskListProps) {
               <img
                 className="list-pic"
                 style={{ cursor: "pointer" }}
-                src="assets/list.png"
+                src={ListIcon}
               />
             </NavLink>
           </div>
@@ -41,11 +45,11 @@ export default function TaskList(props: taskListProps) {
             style={{ width: "30px", height: "30px", cursor: "pointer" }}
             onClick={() => {
               props.DropDownHandler(props.list);
-              if (DropState === "assets/down_arrow.png") {
-                setDropState("assets/up_arrow.png");
+              if (DropState === DownArrow) {
+                setDropState(UpArrow);
                 return;
               } else {
-                setDropState("assets/down_arrow.png");
+                setDropState(DownArrow);
               }
             }}
           />
@@ -64,7 +68,7 @@ export default function TaskList(props: taskListProps) {
         }}
       >
         <img
-          src="assets/trash.png"
+          src={TrashIcon}
           style={{
             width: "30px",
             height: props.list.deleteHeight,

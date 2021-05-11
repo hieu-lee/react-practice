@@ -15,6 +15,7 @@ import ToDoList from "../models/ToDoList";
 import "./ListsPage.css";
 import LogInPage from "./LogInPage";
 import TaskList from "./TaskList";
+import AddIcon from "../assets/add.png";
 
 const useStyles = makeStyles(() => ({
   newTitleTextField: {
@@ -100,7 +101,7 @@ export default function ListPage(props: ListsPageProps) {
                 <Tooltip title="Add">
                   <img
                     onClick={AddNewList}
-                    src="assets/add.png"
+                    src={AddIcon}
                     style={{
                       height: "30px",
                       width: "30px",

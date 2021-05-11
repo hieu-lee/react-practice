@@ -18,6 +18,9 @@ import DatePicker from "./DatePicker";
 import LogInPage from "./LogInPage";
 import TaskItem from "./TaskItem";
 import TimePicker from "./TimePicker";
+import AddIcon from "../assets/add.png";
+import DownArrow from "../assets/down_arrow.png";
+import UpArrow from "../assets/up_arrow.png";
 
 const useStyles = makeStyles({
   root: {
@@ -51,7 +54,7 @@ export default function TasksPage(props: TasksPageProps) {
   var thisList = new ToDoList();
   thisList.listId = props.listId;
   const [FilteredListState, setFilteredListState] = useState(ListState);
-  const [DropState, setDropState] = useState("../../assets/down_arrow.png");
+  const [DropState, setDropState] = useState(DownArrow);
   const [ContentHeight, setContentHeight] = useState("0");
   const [NewTitle, setNewTitle] = useState("");
   const [NewContent, setNewContent] = useState("");
@@ -123,10 +126,10 @@ export default function TasksPage(props: TasksPageProps) {
   const ShowNewContent = () => {
     if (ContentHeight === "0") {
       setContentHeight("65px");
-      setDropState("../../assets/up_arrow.png");
+      setDropState(UpArrow);
     } else {
       setContentHeight("0");
-      setDropState("../../assets/down_arrow.png");
+      setDropState(DownArrow);
     }
   };
   if (props.LoggedState) {
@@ -163,7 +166,7 @@ export default function TasksPage(props: TasksPageProps) {
                       marginTop: "10px",
                       cursor: "pointer",
                     }}
-                    src="../../assets/add.png"
+                    src={AddIcon}
                   />
                 </Tooltip>
                 <TextField

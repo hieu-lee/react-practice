@@ -2,6 +2,9 @@ import { Checkbox, Switch, TextField } from "@material-ui/core";
 import React, { useState } from "react";
 import { DeleteItemAsync } from "../apis/ListsService";
 import ToDoItem from "../models/ToDoItem";
+import DownArrow from "../assets/down_arrow.png";
+import UpArrow from "../assets/up_arrow.png";
+import TrashIcon from "../assets/trash.png";
 
 type TaskItemProps = {
   UsernameState: string;
@@ -11,7 +14,7 @@ type TaskItemProps = {
 };
 
 export default function TaskItem(props: TaskItemProps) {
-  const [DropState, setDropState] = useState("../../assets/down_arrow.png");
+  const [DropState, setDropState] = useState(DownArrow);
   const [ContentState, setContentState] = useState(props.Item.content);
   const [CompletedState, setCompletedState] = useState(props.Item.completed);
   const [ImportantState, setImportantState] = useState(props.Item.important);
@@ -66,11 +69,11 @@ export default function TaskItem(props: TaskItemProps) {
         return item;
       })
     );
-    if (DropState === "../../assets/down_arrow.png") {
-      setDropState("../../assets/up_arrow.png");
+    if (DropState === DownArrow) {
+      setDropState(UpArrow);
       return;
     } else {
-      setDropState("../../assets/down_arrow.png");
+      setDropState(DownArrow);
     }
   };
   const ItemDeleteHandler = async () => {
@@ -150,7 +153,7 @@ export default function TaskItem(props: TaskItemProps) {
           }}
         >
           <img
-            src="../../assets/trash.png"
+            src={TrashIcon}
             style={{
               width: "30px",
               height: props.Item.deleteHeight,
@@ -219,7 +222,7 @@ export default function TaskItem(props: TaskItemProps) {
           }}
         >
           <img
-            src="../../assets/trash.png"
+            src={TrashIcon}
             style={{
               width: "30px",
               height: props.Item.deleteHeight,
