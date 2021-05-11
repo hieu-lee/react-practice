@@ -52,9 +52,8 @@ export default function LogInPage(props: LogInPageProps) {
   const [register, setRegister] = useState(false);
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [snackbarOpenState, setSnackbarOpenState] = useState(false);
-  const [snackbarSeverityState, setSnackbarSeverityState] = useState<Color>(
-    "error"
-  );
+  const [snackbarSeverityState, setSnackbarSeverityState] =
+    useState<Color>("error");
   const [snackbarMessageState, setSnackbarMessageState] = useState("");
   const ChangeRegister = () => {
     setUsername("");
@@ -83,7 +82,7 @@ export default function LogInPage(props: LogInPageProps) {
       setLoadingState(true);
       const myAcc = new Account(username, password);
       try {
-        var res = await SignIn(myAcc);
+        await SignIn(myAcc);
         setLoadingState(false);
         setSnackbarMessageState("Successfully signed in");
         setSnackbarSeverityState("success");
@@ -121,7 +120,7 @@ export default function LogInPage(props: LogInPageProps) {
       setPassword(password.trim());
       const myAcc = new Account(username, password);
       try {
-        var res = await SignUp(myAcc);
+        await SignUp(myAcc);
         setLoadingState(false);
         setSnackbarMessageState("Successfully signed up with your new account");
         setSnackbarSeverityState("success");

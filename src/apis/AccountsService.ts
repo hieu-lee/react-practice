@@ -1,4 +1,3 @@
-import React from "react";
 import Account from "../models/Account";
 import axios from "./axios";
 

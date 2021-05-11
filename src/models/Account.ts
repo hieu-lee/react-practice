@@ -1,4 +1,3 @@
-import React from "react";
 import ToDoList from "./ToDoList";
 
 export default class Account {

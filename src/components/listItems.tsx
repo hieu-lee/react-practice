@@ -26,18 +26,28 @@ export default function ListItems() {
           <ListItemText primary="Log In" />
         </ListItem>
       </NavLink>
-      {/* <ListItem button>
-        <ListItemIcon>
-          <TodayIcon />
-        </ListItemIcon>
-        <ListItemText primary="Today Tasks" />
-      </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <DateRangeIcon />
-        </ListItemIcon>
-        <ListItemText primary="Custom Day Tasks" />
-      </ListItem> */}
+      <NavLink
+        to={"/today-tasks"}
+        style={{ textDecoration: "none", color: "#202020" }}
+      >
+        <ListItem button>
+          <ListItemIcon>
+            <TodayIcon />
+          </ListItemIcon>
+          <ListItemText primary="Today Tasks" />
+        </ListItem>
+      </NavLink>
+      <NavLink
+        to={"/day-tasks"}
+        style={{ textDecoration: "none", color: "#202020" }}
+      >
+        <ListItem button>
+          <ListItemIcon>
+            <DateRangeIcon />
+          </ListItemIcon>
+          <ListItemText primary="Custom Day Tasks" />
+        </ListItem>
+      </NavLink>
     </nav>
   );
 }

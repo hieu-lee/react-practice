@@ -130,7 +130,7 @@ export default function TaskItem(props: TaskItemProps) {
             }}
           >
             <TextField
-              style={{ marginTop: "5px" }}
+              style={{ marginTop: "5px", overflowY: "scroll" }}
               variant="outlined"
               multiline={true}
               fullWidth={true}
@@ -199,7 +199,7 @@ export default function TaskItem(props: TaskItemProps) {
             }}
           >
             <TextField
-              style={{ marginTop: "5px" }}
+              style={{ marginTop: "5px", overflowY: "scroll" }}
               variant="outlined"
               multiline={true}
               fullWidth={true}

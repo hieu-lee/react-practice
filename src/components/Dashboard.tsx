@@ -10,17 +10,16 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
-import TextField from "@material-ui/core/TextField";
-import Grid from "@material-ui/core/Grid";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import GitHubIcon from "@material-ui/icons/GitHub";
-import Tooltip from "@material-ui/core/Tooltip";
 import ListItems from "./listItems";
 import ListsPage from "./ListsPage";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import TasksPage from "./TasksPage";
 import LogInPage from "./LogInPage";
+import TodayTasksPage from "./TodayTasksPage";
+import DayTasksPage from "./DayTasksPage";
 
 type DashboardProps = {
   LoggedState: boolean;
@@ -156,6 +155,7 @@ export default function Dashboard(props: DashboardProps) {
           <a
             href="https://github.com/hieu-lee/react-practice"
             target="_blank"
+            rel="noreferrer"
             style={{ color: "white", outline: "none" }}
           >
             <IconButton color="inherit">
@@ -215,6 +215,22 @@ export default function Dashboard(props: DashboardProps) {
                 />
               )}
             />
+            <Route exact path="/today-tasks">
+              <TodayTasksPage
+                LoggedState={props.LoggedState}
+                setLoggedState={props.setLoggedState}
+                UsernameState={props.UsernameState}
+                setUsernameState={props.setUsernameState}
+              />
+            </Route>
+            <Route exact path="/day-tasks">
+              <DayTasksPage
+                LoggedState={props.LoggedState}
+                setLoggedState={props.setLoggedState}
+                UsernameState={props.UsernameState}
+                setUsernameState={props.setUsernameState}
+              />
+            </Route>
           </Switch>
         </Container>
       </main>

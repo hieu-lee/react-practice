@@ -11,7 +11,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router-dom";
 import { GetItemsAsync, UpdateListAsync } from "../apis/ListsService";
 import ToDoItem from "../models/ToDoItem";
 import ToDoList from "../models/ToDoList";
@@ -60,37 +59,38 @@ export default function TasksPage(props: TasksPageProps) {
   const [NewDate, setNewDate] = React.useState<Date | null>(null);
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const updateFilter = () => {
-    switch (value) {
-      case 0:
-        setFilteredListState(ListState);
-        return;
-      case 1:
-        const today = new Date();
-        setFilteredListState(
-          ListState.filter(
-            (item) =>
-              item.timeRemind === null ||
-              (new Date(item.timeRemind).getDate() === today.getDate() &&
-                new Date(item.timeRemind).getMonth() === today.getMonth() &&
-                new Date(item.timeRemind).getFullYear() === today.getFullYear())
-          )
-        );
-        return;
-      case 2:
-        setFilteredListState(ListState.filter((item) => !item.completed));
-        return;
-      case 3:
-        setFilteredListState(ListState.filter((item) => item.important));
-        return;
-      case 4:
-        setFilteredListState(ListState.filter((item) => item.completed));
-        return;
-      default:
-        return;
-    }
-  };
   useEffect(() => {
+    const updateFilter = () => {
+      switch (value) {
+        case 0:
+          setFilteredListState(ListState);
+          return;
+        case 1:
+          const today = new Date();
+          setFilteredListState(
+            ListState.filter(
+              (item) =>
+                item.timeRemind === null ||
+                (new Date(item.timeRemind).getDate() === today.getDate() &&
+                  new Date(item.timeRemind).getMonth() === today.getMonth() &&
+                  new Date(item.timeRemind).getFullYear() ===
+                    today.getFullYear())
+            )
+          );
+          return;
+        case 2:
+          setFilteredListState(ListState.filter((item) => !item.completed));
+          return;
+        case 3:
+          setFilteredListState(ListState.filter((item) => item.important));
+          return;
+        case 4:
+          setFilteredListState(ListState.filter((item) => item.completed));
+          return;
+        default:
+          return;
+      }
+    };
     updateFilter();
   }, [value, ListState]);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -222,7 +222,7 @@ export default function TasksPage(props: TasksPageProps) {
             }}
           >
             <TextField
-              style={{ marginTop: "5px" }}
+              style={{ marginTop: "5px", overflowY: "scroll" }}
               placeholder="Content"
               variant="outlined"
               value={NewContent}
