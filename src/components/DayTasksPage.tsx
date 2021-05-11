@@ -39,7 +39,7 @@ export default function DayTasksPage(props: DayTasksPageProps) {
       const GetDayTasks = async () => {
         var response = await GetItemsFromDateAsync(
           props.UsernameState,
-          NewDate!.toUTCString()
+          NewDate!.toISOString()
         );
         setDayTasks(response);
         setLoadingState(false);

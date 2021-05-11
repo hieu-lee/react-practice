@@ -64,8 +64,8 @@ export default function LogInPage(props: LogInPageProps) {
   const LogOut = () => {
     props.setLoggedState(false);
     props.setUsernameState("");
-    localStorage.setItem("LoggedState", "false");
-    localStorage.setItem("UsernameState", "");
+    localStorage.setItem("ToDoListLoggedState", "false");
+    localStorage.setItem("ToDoListUsernameState", "");
   };
   const LogInAsync = async () => {
     if (username.trim() === "") {
@@ -88,8 +88,8 @@ export default function LogInPage(props: LogInPageProps) {
         setSnackbarSeverityState("success");
         props.setLoggedState(true);
         props.setUsernameState(username);
-        localStorage.setItem("LoggedState", "true");
-        localStorage.setItem("UsernameState", username);
+        localStorage.setItem("ToDoListLoggedState", "true");
+        localStorage.setItem("ToDoListUsernameState", username);
         setSnackbarOpenState(true);
       } catch (err) {
         setLoadingState(false);
@@ -126,8 +126,8 @@ export default function LogInPage(props: LogInPageProps) {
         setSnackbarSeverityState("success");
         props.setLoggedState(true);
         props.setUsernameState(username);
-        localStorage.setItem("LoggedState", "true");
-        localStorage.setItem("UsernameState", username);
+        localStorage.setItem("ToDoListLoggedState", "true");
+        localStorage.setItem("ToDoListUsernameState", username);
         setSnackbarOpenState(true);
       } catch (err) {
         setLoadingState(false);

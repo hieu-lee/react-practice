@@ -15,7 +15,7 @@ export default function ListItems() {
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary="Home" />
+          <ListItemText primary="My Lists" />
         </ListItem>
       </NavLink>
       <NavLink to={"/log"} style={{ textDecoration: "none", color: "#202020" }}>

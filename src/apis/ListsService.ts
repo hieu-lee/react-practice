@@ -26,6 +26,19 @@ export async function GetTodayItemsAsync(username: string) {
   return res;
 }
 
+export async function GetOneTodayItem(username: string) {
+  const date = new Date().toISOString();
+  var res = await axios
+    .get<ToDoItem | null>(`/api/Lists/today-one-item/${username}/${date}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      throw err;
+    });
+  return res;
+}
+
 export async function GetItemsFromDateAsync(username: string, date: string) {
   var res = await axios
     .get<ToDoItem[]>(`/api/Lists/date-items/${username}/${date}`)
