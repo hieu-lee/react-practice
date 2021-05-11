@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter, NavLink } from "react-router-dom";
 import "./App.css";
 import Dashboard from "./components/Dashboard";
-import MuiAlert, { AlertProps, Color } from "@material-ui/lab/Alert";
-import { Snackbar, Typography } from "@material-ui/core";
+import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
+import { Snackbar } from "@material-ui/core";
 import { GetOneTodayItem } from "./apis/ListsService";
 import { AlertTitle } from "@material-ui/lab";
 
