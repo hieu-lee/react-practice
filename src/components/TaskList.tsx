@@ -22,7 +22,9 @@ export default function TaskList(props: taskListProps) {
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div style={{ display: "flex" }}>
           <div>
-            <NavLink to={`/task/${props.list.listId}/${props.list.name}`}>
+            <NavLink
+              to={`/react-practice/task/${props.list.listId}/${props.list.name}`}
+            >
               <img
                 className="list-pic"
                 style={{ cursor: "pointer" }}

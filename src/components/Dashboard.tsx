@@ -185,7 +185,7 @@ export default function Dashboard(props: DashboardProps) {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Switch>
-            <Route exact path="/">
+            <Route exact path="/react-practice/">
               <ListsPage
                 LoggedState={props.LoggedState}
                 setLoggedState={props.setLoggedState}
@@ -193,7 +193,7 @@ export default function Dashboard(props: DashboardProps) {
                 setUsernameState={props.setUsernameState}
               />
             </Route>
-            <Route exact path="/log">
+            <Route exact path="/react-practice/log">
               <LogInPage
                 LoggedState={props.LoggedState}
                 setLoggedState={props.setLoggedState}
@@ -203,7 +203,7 @@ export default function Dashboard(props: DashboardProps) {
             </Route>
             <Route
               exact
-              path="/task/:listId/:listName"
+              path="/react-practice/task/:listId/:listName"
               render={(routeProps) => (
                 <TasksPage
                   listName={routeProps.match.params.listName}
@@ -215,7 +215,7 @@ export default function Dashboard(props: DashboardProps) {
                 />
               )}
             />
-            <Route exact path="/today-tasks">
+            <Route exact path="/react-practice/today-tasks">
               <TodayTasksPage
                 LoggedState={props.LoggedState}
                 setLoggedState={props.setLoggedState}
@@ -223,7 +223,7 @@ export default function Dashboard(props: DashboardProps) {
                 setUsernameState={props.setUsernameState}
               />
             </Route>
-            <Route exact path="/day-tasks">
+            <Route exact path="/react-practice/day-tasks">
               <DayTasksPage
                 LoggedState={props.LoggedState}
                 setLoggedState={props.setLoggedState}

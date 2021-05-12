@@ -10,7 +10,10 @@ import { NavLink } from "react-router-dom";
 export default function ListItems() {
   return (
     <nav>
-      <NavLink to={"/"} style={{ textDecoration: "none", color: "#202020" }}>
+      <NavLink
+        to={"/react-practice/"}
+        style={{ textDecoration: "none", color: "#202020" }}
+      >
         <ListItem button>
           <ListItemIcon>
             <HomeIcon />
@@ -18,7 +21,10 @@ export default function ListItems() {
           <ListItemText primary="My Lists" />
         </ListItem>
       </NavLink>
-      <NavLink to={"/log"} style={{ textDecoration: "none", color: "#202020" }}>
+      <NavLink
+        to={"/react-practice/log"}
+        style={{ textDecoration: "none", color: "#202020" }}
+      >
         <ListItem button>
           <ListItemIcon>
             <AccountCircleIcon />
@@ -27,7 +33,7 @@ export default function ListItems() {
         </ListItem>
       </NavLink>
       <NavLink
-        to={"/today-tasks"}
+        to={"/react-practice/today-tasks"}
         style={{ textDecoration: "none", color: "#202020" }}
       >
         <ListItem button>
@@ -38,7 +44,7 @@ export default function ListItems() {
         </ListItem>
       </NavLink>
       <NavLink
-        to={"/day-tasks"}
+        to={"/react-practice/day-tasks"}
         style={{ textDecoration: "none", color: "#202020" }}
       >
         <ListItem button>

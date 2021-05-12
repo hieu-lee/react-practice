@@ -2,6 +2,7 @@ import ToDoItem from "../models/ToDoItem";
 import ToDoList from "../models/ToDoList";
 import axios from "./axios";
 
+// Get all the lists of the user
 export async function GetListsAsync(username: string) {
   var res = await axios
     .get<ToDoList[]>(`/api/Lists/lists/${username}`)
@@ -14,6 +15,7 @@ export async function GetListsAsync(username: string) {
   return res;
 }
 
+// Get all the today tasks of the user
 export async function GetTodayItemsAsync(username: string) {
   var res = await axios
     .get<ToDoItem[]>(`/api/Lists/today-items/${username}`)
@@ -26,6 +28,7 @@ export async function GetTodayItemsAsync(username: string) {
   return res;
 }
 
+// Get at most one today task that hasn't been completed that need to be notified to the user
 export async function GetOneTodayItem(username: string) {
   const date = new Date().toISOString();
   var res = await axios
@@ -39,6 +42,7 @@ export async function GetOneTodayItem(username: string) {
   return res;
 }
 
+// Get all the tasks on the given date of the user
 export async function GetItemsFromDateAsync(username: string, date: string) {
   var res = await axios
     .get<ToDoItem[]>(`/api/Lists/date-items/${username}/${date}`)
@@ -51,6 +55,7 @@ export async function GetItemsFromDateAsync(username: string, date: string) {
   return res;
 }
 
+// Get all the tasks from the given list of the user
 export async function GetItemsAsync(username: string, listid: string) {
   var res = await axios
     .get<ToDoItem[]>(`/api/Lists/items/${username}/${listid}`)
@@ -63,6 +68,7 @@ export async function GetItemsAsync(username: string, listid: string) {
   return res;
 }
 
+// Create a new list for the user
 export async function CreateNewListAsync(username: string, list: ToDoList) {
   list.ownerUsername = username;
   await axios
@@ -75,6 +81,7 @@ export async function CreateNewListAsync(username: string, list: ToDoList) {
     });
 }
 
+// Update the given list of the user in the database
 export async function UpdateListAsync(username: string, list: ToDoList) {
   await axios
     .put(`api/Lists/update-list/${username}`, list)
@@ -86,6 +93,7 @@ export async function UpdateListAsync(username: string, list: ToDoList) {
     });
 }
 
+// Update all the given items in the database
 export async function UpdateTodayItemsAsync(items: ToDoItem[]) {
   await axios
     .put("api/Lists/update-today", items)
@@ -97,6 +105,7 @@ export async function UpdateTodayItemsAsync(items: ToDoItem[]) {
     });
 }
 
+// Delete the given list of the user
 export async function DeleteListAsync(username: string, listid: string) {
   await axios
     .delete(`api/Lists/delete-list/${username}/${listid}`)
@@ -108,6 +117,7 @@ export async function DeleteListAsync(username: string, listid: string) {
     });
 }
 
+// Delete the given item of the user
 export async function DeleteItemAsync(username: string, itemid: string) {
   await axios
     .delete(`api/Lists/delete-item/${username}/${itemid}`)

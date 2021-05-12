@@ -84,7 +84,10 @@ function App() {
           onClose={handleClose}
           anchorOrigin={{ horizontal: "right", vertical: "top" }}
         >
-          <NavLink to={"/today-tasks"} style={{ textDecoration: "none" }}>
+          <NavLink
+            to={"/react-practice/today-tasks"}
+            style={{ textDecoration: "none" }}
+          >
             <Alert
               onClose={handleClose}
               severity="info"
