@@ -6,12 +6,14 @@ import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { Snackbar } from "@material-ui/core";
 import { GetOneTodayItem } from "./apis/ListsService";
 import { AlertTitle } from "@material-ui/lab";
+import { Howl, Howler } from "howler";
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 function App() {
+  Howler.volume(0.8);
   const [snackbarOpenState, setSnackbarOpenState] = useState(false);
   const [snackbarTimeState, setSnackbarTimeState] = useState("");
   const [snackbarTitleState, setSnackbarTitleState] = useState("");
@@ -30,6 +32,10 @@ function App() {
               : `${date.getDate()}/${date.getMonth()}/${date.getFullYear()} at ${date.toLocaleTimeString()}`;
           setSnackbarTimeState(time);
           setSnackbarTitleState(item.title);
+          const AudioSound = new Howl({
+            src: "/react-practice/notification.mp3",
+          });
+          AudioSound.play();
           setSnackbarOpenState(true);
         }
       }
