@@ -4,9 +4,10 @@ import "./App.css";
 import Dashboard from "./components/Dashboard";
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
 import { Snackbar } from "@material-ui/core";
-import { GetOneTodayItem } from "./apis/ListsService";
+import { GetListsAsync, GetOneTodayItem } from "./apis/ListsService";
 import { AlertTitle } from "@material-ui/lab";
 import { Howl, Howler } from "howler";
+import ToDoList from "./models/ToDoList";
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -14,11 +15,24 @@ function Alert(props: AlertProps) {
 
 function App() {
   Howler.volume(0.8);
+  const [LoadingState, setLoadingState] = useState(true);
+  const [MyLists, setMyLists] = useState(new Array<ToDoList>());
   const [snackbarOpenState, setSnackbarOpenState] = useState(false);
   const [snackbarTimeState, setSnackbarTimeState] = useState("");
   const [snackbarTitleState, setSnackbarTitleState] = useState("");
   const [LoggedState, setLoggedState] = useState(false);
   const [UsernameState, setUsernameState] = useState("");
+  useEffect(() => {
+    const getMyLists = async () => {
+      if (LoggedState) {
+        var myLists = await GetListsAsync(UsernameState);
+        setMyLists(myLists);
+        setLoadingState(false);
+        return myLists;
+      }
+    };
+    getMyLists();
+  }, [UsernameState]);
   useEffect(() => {
     const GetNotification = async () => {
       if (LoggedState) {
@@ -73,6 +87,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Dashboard
+          LoadingState={LoadingState}
+          MyLists={MyLists}
+          setMyLists={setMyLists}
           LoggedState={LoggedState}
           setLoggedState={setLoggedState}
           UsernameState={UsernameState}

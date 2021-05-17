@@ -5,12 +5,8 @@ import {
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import {
-  CreateNewListAsync,
-  DeleteListAsync,
-  GetListsAsync,
-} from "../apis/ListsService";
+import React, { useState } from "react";
+import { CreateNewListAsync, DeleteListAsync } from "../apis/ListsService";
 import ToDoList from "../models/ToDoList";
 import "./ListsPage.css";
 import LogInPage from "./LogInPage";
@@ -24,6 +20,9 @@ const useStyles = makeStyles(() => ({
 }));
 
 type ListsPageProps = {
+  LoadingState: boolean;
+  MyLists: ToDoList[];
+  setMyLists: React.Dispatch<React.SetStateAction<ToDoList[]>>;
   LoggedState: boolean;
   setLoggedState: React.Dispatch<React.SetStateAction<boolean>>;
   UsernameState: string;
@@ -32,19 +31,6 @@ type ListsPageProps = {
 
 export default function ListPage(props: ListsPageProps) {
   const classes = useStyles();
-  const [LoadingState, setLoadingState] = useState(true);
-  const [MyLists, setMyLists] = useState(new Array<ToDoList>());
-  useEffect(() => {
-    const getMyLists = async () => {
-      if (props.LoggedState) {
-        var myLists = await GetListsAsync(props.UsernameState);
-        setMyLists(myLists);
-        setLoadingState(false);
-        return myLists;
-      }
-    };
-    getMyLists();
-  }, [props.UsernameState]);
   const [NewName, setNewName] = useState("");
   const AddNewList = async () => {
     var s = NewName.trim();
@@ -54,20 +40,20 @@ export default function ListPage(props: ListsPageProps) {
     s = s[0].toUpperCase() + s.substr(1);
     var NewList = new ToDoList();
     NewList.name = s;
-    setMyLists([...MyLists, NewList]);
+    props.setMyLists([...props.MyLists, NewList]);
     await CreateNewListAsync(props.UsernameState, NewList);
     setNewName("");
   };
   const DeleteList = async (list: ToDoList) => {
-    setMyLists(MyLists.filter((el) => el.listId !== list.listId));
+    props.setMyLists(props.MyLists.filter((el) => el.listId !== list.listId));
     await DeleteListAsync(props.UsernameState, list.listId);
   };
   const NewNameChange = (e: any) => {
     setNewName(e.target.value);
   };
   const DropDown = (list: ToDoList) => {
-    setMyLists(
-      MyLists.map((item: ToDoList) => {
+    props.setMyLists(
+      props.MyLists.map((item: ToDoList) => {
         if (item.listId === list.listId) {
           if (list.deleteHeight === "0") {
             item.deleteHeight = "30px";
@@ -80,7 +66,7 @@ export default function ListPage(props: ListsPageProps) {
     );
   };
   if (props.LoggedState) {
-    if (LoadingState) {
+    if (props.LoadingState) {
       return (
         <div>
           <LinearProgress />
@@ -124,7 +110,7 @@ export default function ListPage(props: ListsPageProps) {
           </div>
           <hr />
           <ul>
-            {MyLists.map((list) => (
+            {props.MyLists.map((list) => (
               <li key={list.listId}>
                 <TaskList
                   list={list}

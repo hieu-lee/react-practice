@@ -20,8 +20,12 @@ import TasksPage from "./TasksPage";
 import LogInPage from "./LogInPage";
 import TodayTasksPage from "./TodayTasksPage";
 import DayTasksPage from "./DayTasksPage";
+import ToDoList from "../models/ToDoList";
 
 type DashboardProps = {
+  LoadingState: boolean;
+  MyLists: ToDoList[];
+  setMyLists: React.Dispatch<React.SetStateAction<ToDoList[]>>;
   LoggedState: boolean;
   setLoggedState: React.Dispatch<React.SetStateAction<boolean>>;
   UsernameState: string;
@@ -187,6 +191,9 @@ export default function Dashboard(props: DashboardProps) {
           <Switch>
             <Route exact path="/react-practice/">
               <ListsPage
+                MyLists={props.MyLists}
+                setMyLists={props.setMyLists}
+                LoadingState={props.LoadingState}
                 LoggedState={props.LoggedState}
                 setLoggedState={props.setLoggedState}
                 UsernameState={props.UsernameState}
